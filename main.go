@@ -1,15 +1,19 @@
 package main
 
-import (
-    "fmt"
-
+	import (
     "ai-bot-for-project/bot"
 )
 
 func main() {
 
-    chatbot := bot.NewChatbot("YOUR_API_KEY")
+    chatbot := bot.NewChatBot("API_KEY")
 
-    fmt.Println("Bot Created")
-    fmt.Println(chatbot)
+    chatbot.AddMessage("user", "Hello")
+
+    chatbot.AddMessage(
+        "assistant",
+        "Hi, how can I help you?",
+    )
+
+    chatbot.PrintHistory()
 }
