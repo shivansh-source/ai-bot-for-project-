@@ -1,19 +1,48 @@
 package main
 
-	import (
-    "ai-bot-for-project/bot"
+import (
+	"bufio"
+	"fmt"
+	"os"
+	"strings"
+
+	"ai-bot-for-project/bot"
+
+	"github.com/joho/godotenv"
 )
 
 func main() {
 
-    chatbot := bot.NewChatBot("API_KEY")
+	godotenv.Load()
 
-    chatbot.AddMessage("user", "Hello")
+	apiKey := os.Getenv("GROQ_API_KEY")
 
-    chatbot.AddMessage(
-        "assistant",
-        "Hi, how can I help you?",
-    )
+	chatbot := bot.NewChatBot(apiKey)
 
-    chatbot.PrintHistory()
+	scanner := bufio.NewScanner(os.Stdin)
+
+	fmt.Println("AI Bot Started")
+	fmt.Println("Type exit to quit")
+
+	for {
+
+		scanner.Scan()
+
+		prompt := strings.TrimSpace(scanner.Text())
+
+		if prompt == "exit" {
+			break
+		}
+
+		response, err := chatbot.GenerateResponse(prompt)
+
+		if err != nil {
+			fmt.Println("error:", err)
+			continue
+		}
+
+		fmt.Println()
+		fmt.Println(response)
+		fmt.Println()
+	}
 }
